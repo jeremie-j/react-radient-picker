@@ -4,12 +4,13 @@ export interface task {
   done: boolean,
 }
 
-export default function renderTasksList(props: {
+interface propTypes {
   tasks: task[],
   onDelete: (index: number) => void,
   onChangeTaskStatus: (index: number) => void
 }
-) {
+
+export default function renderTasksList(props: propTypes) {
   return <ul>
     {props.tasks.map((task, index) =>
       <li key={index}>

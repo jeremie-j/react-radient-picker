@@ -34,9 +34,13 @@ export default function App() {
     <div className="App">
       <TaskForm
         task={editedValue}
+        canCreate={tasksList.length < 10}
         onChange={(task) => handleChange(task)}
         onCreate={createTask} />
-      <TaskList tasks={tasksList} onDelete={deleteTask} onChangeTaskStatus={changeTaskStatus} />
+      <TaskList
+        tasks={tasksList}
+        onDelete={deleteTask}
+        onChangeTaskStatus={changeTaskStatus} />
     </div>
   );
 }

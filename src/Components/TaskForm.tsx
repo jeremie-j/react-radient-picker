@@ -2,6 +2,7 @@ import { task } from './TaskList'
 
 interface propTypes {
     task: task
+    canCreate: boolean
     onChange: (value: task) => void
     onCreate: () => void
 }
@@ -23,6 +24,6 @@ export default function renderForm(props: propTypes) {
             onInput={(e) => props.onChange({ ...props.task, 'description': e.currentTarget.value })}
         />
 
-        <button onClick={props.onCreate}>Create</button>
+        <button onClick={props.onCreate} disabled={!props.canCreate}>Create</button>
     </>
 }
