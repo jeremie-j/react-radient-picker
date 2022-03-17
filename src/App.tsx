@@ -1,26 +1,42 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import TaskForm from './Components/TaskForm'
+import TaskList, { task } from './Components/TaskList'
 
-function App() {
+export default function App() {
+  const defaultValue: task = {
+    title: '',
+    description: '',
+    done: false
+  }
+
+  const [tasksList, handleTaskListChange] = React.useState<task[]>([])
+  const [editedValue, handleChange] = React.useState<task>(defaultValue)
+
+  const createTask = () => {
+    handleTaskListChange([...tasksList, editedValue])
+    handleChange(defaultValue)
+  }
+
+  const deleteTask = (index: number) => {
+    const taskListClone = [...tasksList]
+    taskListClone.splice(index, 1)
+    handleTaskListChange(taskListClone)
+  }
+
+  const changeTaskStatus = (index: number) => {
+    const taskListClone = [...tasksList]
+    const finishedTask = { ...taskListClone[index], 'done': !taskListClone[index].done }
+    taskListClone.splice(index, 1, finishedTask)
+    handleTaskListChange(taskListClone)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <TaskForm
+        task={editedValue}
+        onChange={(task) => handleChange(task)}
+        onCreate={createTask} />
+      <TaskList tasks={tasksList} onDelete={deleteTask} onChangeTaskStatus={changeTaskStatus} />
     </div>
   );
 }
-
-export default App;
