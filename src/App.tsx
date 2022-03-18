@@ -18,7 +18,6 @@ export default function App() {
   }
 
   const handleBreakpointChange = (index: number, breakpoint: breakpoint) => {
-    console.log(breakpoint)
     const BreakpointsListClone = [...BreakpointsList]
     BreakpointsListClone.splice(index, 1, breakpoint)
     handleBreakpointListChange(BreakpointsListClone)
