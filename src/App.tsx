@@ -53,7 +53,7 @@ export default function App() {
         max={360}
       />
       <div style={{ width: 100 + '%', height: 100 + 'px', background: computeCssPropertie() }}></div>
-      <span>background-color: {computeCssPropertie()}</span>
+      <span>background: {computeCssPropertie()}</span>
     </div>
   );
 }
