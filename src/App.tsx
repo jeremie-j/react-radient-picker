@@ -1,46 +1,59 @@
 import React from 'react';
-import TaskForm from './Components/TaskForm'
-import TaskList, { task } from './Components/TaskList'
+// import TaskForm from './Components/TaskForm'
+import BreakpointList, { breakpoint } from './Components/BreakpointList'
 
 export default function App() {
-  const defaultValue: task = {
-    title: '',
-    description: '',
-    done: false
+  const defaultValue: breakpoint = {
+    percentage: 0,
+    color: '#000000',
   }
 
-  const [tasksList, handleTaskListChange] = React.useState<task[]>([])
-  const [editedValue, handleChange] = React.useState<task>(defaultValue)
+  const [rotation, setRotation] = React.useState(0)
+  const [BreakpointsList, handleBreakpointListChange] = React.useState<breakpoint[]>([])
+  const [editedValue, handleChange] = React.useState<breakpoint>(defaultValue)
 
-  const createTask = () => {
-    handleTaskListChange([...tasksList, editedValue])
+  const createBreakpoint = () => {
+    handleBreakpointListChange([...BreakpointsList, editedValue])
     handleChange(defaultValue)
   }
 
-  const deleteTask = (index: number) => {
-    const taskListClone = [...tasksList]
-    taskListClone.splice(index, 1)
-    handleTaskListChange(taskListClone)
+  const handleBreakpointChange = (index: number, breakpoint: breakpoint) => {
+    console.log(breakpoint)
+    const BreakpointsListClone = [...BreakpointsList]
+    BreakpointsListClone.splice(index, 1, breakpoint)
+    handleBreakpointListChange(BreakpointsListClone)
   }
 
-  const changeTaskStatus = (index: number) => {
-    const taskListClone = [...tasksList]
-    const finishedTask = { ...taskListClone[index], 'done': !taskListClone[index].done }
-    taskListClone.splice(index, 1, finishedTask)
-    handleTaskListChange(taskListClone)
+  const deleteBreakpoint = (index: number) => {
+    const BreakpointsListClone = [...BreakpointsList]
+    BreakpointsListClone.splice(index, 1)
+    handleBreakpointListChange(BreakpointsListClone)
+  }
+
+  const computeCssPropertie = () => {
+    const propertie = BreakpointsList.reduce((propertie: string, breakpoint: breakpoint) => propertie + `, ${breakpoint.color} ${breakpoint.percentage}%`, '')
+    return `linear-gradient(${rotation}deg${propertie})`
   }
 
   return (
     <div className="App">
-      <TaskForm
-        task={editedValue}
-        canCreate={tasksList.length < 10}
-        onChange={(task) => handleChange(task)}
-        onCreate={createTask} />
-      <TaskList
-        tasks={tasksList}
-        onDelete={deleteTask}
-        onChangeTaskStatus={changeTaskStatus} />
+      <BreakpointList
+        breakpoints={BreakpointsList}
+        onChange={handleBreakpointChange}
+        onDelete={deleteBreakpoint}
+      />
+      <button onClick={createBreakpoint}>Create</button>
+      <label htmlFor="range">Rotation</label>
+      <input type="range"
+        name='range'
+        onChange={(e) => setRotation(parseInt(e.currentTarget.value))}
+        step={1}
+        value={rotation}
+        min={0}
+        max={360}
+      />
+      <div style={{ width: 100 + '%', height: 100 + 'px', background: computeCssPropertie() }}></div>
+      <span>background-color: {computeCssPropertie()}</span>
     </div>
   );
 }
